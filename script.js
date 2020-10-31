@@ -1,6 +1,8 @@
 let canvas = document.getElementById("snake");
 let context = canvas.getContext("2d");
 let box = 32;
+let pontuacao = 0;
+let pontuacaoMax = 0;
 let snake = [];
 snake[0] = {
     x: 8 * box,
@@ -47,8 +49,10 @@ function iniciarJogo(){
 
     for(i = 1; i < snake.length; i++){
         if(snake[0].x == snake[i].x && snake[0].y == snake[i].y){
-            clearInterval(jogo);
-            alert('Game Over :(');
+            if(pontuacaoMax < pontuacao) pontuacaoMax = pontuacao;
+            alert("Game Over :( | Pontuação: " + pontuacao + " | Pontuação Máxima: " + pontuacaoMax);
+            pontuacao = 1;
+            snake.length = 1;
         }
     }
 
@@ -67,11 +71,10 @@ function iniciarJogo(){
     if(snakeX != food.x || snakeY != food.y){
         snake.pop();
     }else{
-        food.x = Math.floor(Math.random() * 15 + 1) * box,
-        food.y = Math.floor(Math.random() * 15 + 1) * box
+        food.x = Math.floor(Math.random() * 15 + 1) * box;
+        food.y = Math.floor(Math.random() * 15 + 1) * box;
+        pontuacao++;
     }
-
-    
 
     let newHead = {
         x: snakeX,
