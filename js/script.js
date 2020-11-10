@@ -1,8 +1,6 @@
 let canvas = document.getElementById("snake");
 let context = canvas.getContext("2d");
 let box = 32;
-let pontuacao = 0;
-let pontuacaoMax = 0;
 let snake = [];
 snake[0] = {
     x: 8 * box,
@@ -14,6 +12,7 @@ let food = {
     y: Math.floor(Math.random() * 15 + 1) * box
 }
 
+/* Funções do jogo da Cobrinha */
 function criarBG(){
     context.fillStyle = "lightgreen";
     context.fillRect(0, 0, 16 * box, 16 * box);
@@ -29,6 +28,11 @@ function criarCobrinha(){
 function drawFood(){
     context.fillStyle = "red";
     context.fillRect(food.x, food.y, box, box);
+}
+
+function updateScore(){
+    document.getElementById("pontuacao").innerHTML = "Pontuação: ";
+    document.getElementById("pontuacao").innerHTML = "Pontuação Máx: ";
 }
 
 function endGame(){
