@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <!--Scripts-->
     <script defer src="./js/script.js"></script>
+    <script src="https://kit.fontawesome.com/48b67b4aad.js" crossorigin="anonymous"></script>
     <title>Snake Game</title>
 </head>
 
@@ -15,6 +16,13 @@
     <div id="wrapper">
         <h1>Snake Game!</h1>
         <canvas id="snake" width="512" height="512"></canvas>
+        <div class="menu-botoes">
+            <button role="button" class="botao" onclick="changeMode()">
+                <i id="icone-modo" class="fas fa-adjust"></i>
+            </button>
+            <h3 id="pontuacao">Pontuação: 0</h3>
+            <h3 id="pontuacaoMax">Pontuação Máx: 0</h3>
+        </div>
     </div>
 </body>
 </html>

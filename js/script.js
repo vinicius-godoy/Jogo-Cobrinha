@@ -1,6 +1,9 @@
 let canvas = document.getElementById("snake");
 let context = canvas.getContext("2d");
 let box = 32;
+let pontuacao = 0;
+let pontuacaoMax = 0;
+let change = 0;
 let snake = [];
 snake[0] = {
     x: 8 * box,
@@ -10,6 +13,23 @@ let direction;
 let food = {
     x: Math.floor(Math.random() * 15 + 1) * box,
     y: Math.floor(Math.random() * 15 + 1) * box
+}
+
+/* Funções da página */
+function changeMode(){
+    if(change == 0){
+        document.getElementById("wrapper").style.backgroundColor = "var(--branco)";
+        document.getElementById("wrapper").style.color = "var(--preto)";
+        document.getElementById("icone-modo").style.color = "var(--preto)";
+        change++;
+        console.log("Tema modificado para claro | Change = " + change);
+    }else{
+        document.getElementById("wrapper").style.backgroundColor = "var(--preto)";
+        document.getElementById("wrapper").style.color = "var(--branco)";
+        document.getElementById("icone-modo").style.color = "var(--branco)";
+        console.log("Tema modificado para escuro | Change = " + change);
+        change--;
+    }
 }
 
 /* Funções do jogo da Cobrinha */
