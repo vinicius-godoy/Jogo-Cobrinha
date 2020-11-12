@@ -27,8 +27,8 @@ function changeMode(){
         document.getElementById("wrapper").style.backgroundColor = "var(--preto)";
         document.getElementById("wrapper").style.color = "var(--branco)";
         document.getElementById("icone-modo").style.color = "var(--branco)";
-        console.log("Tema modificado para escuro | Change = " + change);
         change--;
+        console.log("Tema modificado para escuro | Change = " + change);
     }
 }
 
@@ -51,8 +51,8 @@ function drawFood(){
 }
 
 function updateScore(){
-    document.getElementById("pontuacao").innerHTML = "Pontuação: ";
-    document.getElementById("pontuacao").innerHTML = "Pontuação Máx: ";
+    document.getElementById("pontuacao").innerHTML = "Pontuação: " + pontuacao;
+    document.getElementById("pontuacaoMax").innerHTML = "Pontuação Máx: " + pontuacaoMax;
 }
 
 function endGame(){
@@ -92,6 +92,7 @@ function iniciarJogo(){
     criarBG();
     criarCobrinha();
     drawFood();
+    updateScore();
 
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
