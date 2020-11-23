@@ -3,6 +3,7 @@ let context = canvas.getContext("2d");
 let box = 32;
 let pontuacao = 0;
 let pontuacaoMax = 0;
+let check;
 let change = 0;
 let snake = [];
 snake[0] = {
@@ -107,8 +108,14 @@ function iniciarJogo(){
     if(snakeX != food.x || snakeY != food.y){ //Exclui a última caixa se não tiver pegado comida
         snake.pop();
     }else{
-        food.x = Math.floor(Math.random() * 15 + 1) * box;
-        food.y = Math.floor(Math.random() * 15 + 1) * box;
+        do{
+            check = 0;
+            food.x = Math.floor(Math.random() * 15 + 1) * box;
+            food.y = Math.floor(Math.random() * 15 + 1) * box;
+            for(i = 0; i < snake.length; i++){
+                if(food.x == snake[i].x && food.y == snake[i].y){check++;}
+            }
+        }while(check);
         pontuacao++;
     }
 
