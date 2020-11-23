@@ -34,29 +34,29 @@ function changeMode(){
 
 /* Funções do jogo da Cobrinha */
 function criarBG(){
-    context.fillStyle = "lightgreen";
-    context.fillRect(0, 0, 16 * box, 16 * box);
+    context.fillStyle = "lightgreen"; //Define a cor do preenchimento do canvas como verde-claro
+    context.fillRect(0, 0, 16 * box, 16 * box); //Preenche o canvas desde tal coordenadas (0, 0) mais tantos números (16 * box, 16 * box) em verde-claro
 }
 
 function criarCobrinha(){
     for(i = 0; i < snake.length; i++){
-        context.fillStyle = "green";
-        context.fillRect(snake[i].x, snake[i].y, box, box);
+        context.fillStyle = "green"; //Define a cor do preenchimento da cobrinha como verde
+        context.fillRect(snake[i].x, snake[i].y, box, box); //Preenche o canvas desde tal coordenadas (x e y da cobrinha) mais tantos números (box, box) em verde
     }
 }
 
 function drawFood(){
-    context.fillStyle = "red";
-    context.fillRect(food.x, food.y, box, box);
+    context.fillStyle = "red"; //Define a cor do preenchimento da comida como vermelho
+    context.fillRect(food.x, food.y, box, box); //Preenche o canvas desde tal coordenadas (x e y da comida) mais tantos números (box, box) em vermelho
 }
 
 function updateScore(){
-    document.getElementById("pontuacao").innerHTML = "Pontuação: " + pontuacao;
-    document.getElementById("pontuacaoMax").innerHTML = "Pontuação Máx: " + pontuacaoMax;
+    document.getElementById("pontuacao").innerHTML = "Pontuação: " + pontuacao; 
+    document.getElementById("pontuacaoMax").innerHTML = "Pontuação Máx: " + pontuacaoMax; 
 }
 
 function endGame(){
-    if(pontuacaoMax < pontuacao) pontuacaoMax = pontuacao;
+    if(pontuacaoMax < pontuacao) pontuacaoMax = pontuacao; 
          alert("Game Over :( | Pontuação: " + pontuacao + " | Pontuação Máxima: " + pontuacaoMax);
         pontuacao = 0;
         direction = 0;
@@ -78,7 +78,8 @@ function update(event){
 
 
 function iniciarJogo(){
-    if(snake[0].x > 15 * box) snake[0].x = 0;
+    //If statements pra definir o loop da cobrinha
+    if(snake[0].x > 15 * box) snake[0].x = 0; 
     if(snake[0].x < 0) snake[0].x = 16 * box;
     if(snake[0].y > 15 * box) snake[0].y = 0;
     if(snake[0].y < 0) snake[0].y = 16 * box;
@@ -97,12 +98,13 @@ function iniciarJogo(){
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
 
-    if(direction == "right") snakeX += box;
+    //Adiciona uma caixa pra direção que está indo
+    if(direction == "right") snakeX += box; 
     if(direction == "left") snakeX -= box;
     if(direction == "up") snakeY -= box;
     if(direction == "down") snakeY += box;
 
-    if(snakeX != food.x || snakeY != food.y){
+    if(snakeX != food.x || snakeY != food.y){ //Exclui a última caixa se não tiver pegado comida
         snake.pop();
     }else{
         food.x = Math.floor(Math.random() * 15 + 1) * box;
@@ -110,13 +112,13 @@ function iniciarJogo(){
         pontuacao++;
     }
 
-    let newHead = {
+    let newHead = { 
         x: snakeX,
         y: snakeY
     }
 
-    snake.unshift(newHead);
+    snake.unshift(newHead); //Define a última posição calculada como a cabeça da cobra
 
 }
 
-let jogo = setInterval(iniciarJogo, 100);
+let jogo = setInterval(iniciarJogo, 100); //Roda a função do jogo a cada 100 milisegundos
