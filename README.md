@@ -15,5 +15,5 @@ Coisas que ainda serão feitas.
 - [x] Adicionar Pausa.
 - [ ] Adicionar Vitória caso cubra a tela inteira.
 - [ ] Pontuação Máxima salva no navegador.
-- [ ] Refatoração do código.
+- [x] Refatoração do código.
 - [ ] Responsividade para o celular.
