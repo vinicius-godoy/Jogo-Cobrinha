@@ -14,7 +14,13 @@ let food = { // Inicializa a comida em algum ponto do canvas
 }
 // Variáveis de pontuação e tema do site
 let score = 0;
-let highscore = 0;
+let highscore;
+// Pegar a pontuação máxima, se ela não estiver no localStorage usar zero
+if(getScore() == null || getScore() == "null"){ 
+    highscore = 0;
+}else{
+    highscore = getScore();
+}
 let theme = 0;
 // Variáveis de outras funções do jogo
 let directionBeforePause;
@@ -43,6 +49,15 @@ function updateScore(){ // Atualiza a pontuação
     document.getElementById("pontuacaoMax").innerHTML = "Pontuação Máx: " + highscore; 
 }
 
+function saveScore(hs){
+    localStorage.setItem('highscore', hs);
+}
+
+function getScore(){
+    let hs = localStorage.getItem('highscore');
+    return hs;
+}
+
 /* Funções do jogo da Cobrinha */
 function drawBG(){ // Desenha o canvas completo em verde a cada execução
     context.fillStyle = "lightgreen";
@@ -62,7 +77,10 @@ function drawFood(){ // Desenha a comida a cada execução
 }
 
 function endGame(){ // Encerra o jogo e reinicia todas as configurações necessárias
-    if(highscore < score) highscore = score; 
+    if(highscore < score){
+        highscore = score;
+        saveScore(highscore)
+    } 
     alert("Game Over :( | Pontuação: " + score + " | Pontuação Máxima: " + highscore);
     score = 0;
     direction = 0;
