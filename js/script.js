@@ -15,7 +15,7 @@ let food = { // Inicializa a comida em algum ponto do canvas
 // Variáveis de pontuação e tema do site
 let score = 0;
 let highscore = 0;
-let change = 0;
+let theme = 0;
 // Variáveis de outras funções do jogo
 let directionBeforePause;
 let pause = false;
@@ -23,18 +23,18 @@ let check;
 
 /* Funções da página */
 function changeTheme(){
-    if(change == 0){
-        document.getElementById("wrapper").style.backgroundColor = "var(--branco)";
-        document.getElementById("wrapper").style.color = "var(--preto)";
-        document.getElementById("icone-modo").style.color = "var(--preto)";
-        change++;
-        console.log("Tema modificado para claro | Change = " + change);
+    if(theme == 0){
+        document.documentElement.style
+            .setProperty('--cor-primaria', 'rgb(216, 216, 216)');
+        document.documentElement.style
+            .setProperty('--cor-secundaria', 'rgba(0, 0, 0, 0.85)');
+        theme++;
     }else{
-        document.getElementById("wrapper").style.backgroundColor = "var(--preto)";
-        document.getElementById("wrapper").style.color = "var(--branco)";
-        document.getElementById("icone-modo").style.color = "var(--branco)";
-        change--;
-        console.log("Tema modificado para escuro | Change = " + change);
+        document.documentElement.style
+            .setProperty('--cor-primaria', 'rgba(0, 0, 0, 0.85)');
+        document.documentElement.style
+            .setProperty('--cor-secundaria', 'rgb(216, 216, 216)');
+        theme--;
     }
 }
 
