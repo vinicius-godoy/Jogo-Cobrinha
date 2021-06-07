@@ -8,5 +8,5 @@ Coisas que serão feitas ainda.
 
 - [ ] Pontuação Máxima salva no navegador.
 - [ ] Refatoração do código.
-- [ ] Arrumar Botão de tema.
+- [x] Arrumar Botão de tema.
 - [ ] Responsividade para o celular.
