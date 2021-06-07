@@ -1,11 +1,12 @@
-let canvas = document.getElementById("snake");
+let canvas = document.getElementById("snake"); 
 let context = canvas.getContext("2d");
-let box = 32;
+let box = 32; // Tamanho padrão de cada "caixa" do jogo
 let pontuacao = 0;
 let pontuacaoMax = 0;
 let check;
 let change = 0;
 let snake = [];
+// Inicializa a cobra no meio do canvas
 snake[0] = {
     x: 8 * box,
     y: 8 * box
@@ -17,7 +18,7 @@ let food = {
 }
 
 /* Funções da página */
-function changeMode(){
+function changeTheme(){
     if(change == 0){
         document.getElementById("wrapper").style.backgroundColor = "var(--branco)";
         document.getElementById("wrapper").style.color = "var(--preto)";
@@ -35,8 +36,8 @@ function changeMode(){
 
 /* Funções do jogo da Cobrinha */
 function criarBG(){
-    context.fillStyle = "lightgreen"; //Define a cor do preenchimento do canvas como verde-claro
-    context.fillRect(0, 0, 16 * box, 16 * box); //Preenche o canvas desde tal coordenadas (0, 0) mais tantos números (16 * box, 16 * box) em verde-claro
+    context.fillStyle = "lightgreen"; // Define a cor do preenchimento do canvas como verde-claro
+    context.fillRect(0, 0, 16 * box, 16 * box); // Preenche o canvas desde tal coordenadas (0, 0) mais tantos números (16 * box, 16 * box) em verde-claro
 }
 
 function criarCobrinha(){
@@ -58,14 +59,14 @@ function updateScore(){
 
 function endGame(){
     if(pontuacaoMax < pontuacao) pontuacaoMax = pontuacao; 
-         alert("Game Over :( | Pontuação: " + pontuacao + " | Pontuação Máxima: " + pontuacaoMax);
-        pontuacao = 0;
-        direction = 0;
-        snake.length = 1;
-        snake[0] = {
-            x: 8 * box,
-            y: 8 * box
-        }
+    alert("Game Over :( | Pontuação: " + pontuacao + " | Pontuação Máxima: " + pontuacaoMax);
+    pontuacao = 0;
+    direction = 0;
+    snake.length = 1;
+    snake[0] = {
+        x: 8 * box,
+        y: 8 * box
+    }
 }
 
 document.addEventListener('keydown', update);
@@ -79,7 +80,7 @@ function update(event){
 
 
 function iniciarJogo(){
-    //If statements pra definir o loop da cobrinha
+    //If statements pra definir o loop da cobrinha no mapa
     if(snake[0].x > 15 * box) snake[0].x = 0; 
     if(snake[0].x < 0) snake[0].x = 16 * box;
     if(snake[0].y > 15 * box) snake[0].y = 0;
@@ -108,7 +109,7 @@ function iniciarJogo(){
     if(snakeX != food.x || snakeY != food.y){ //Exclui a última caixa se não tiver pegado comida
         snake.pop();
     }else{
-        do{
+        do{ // Se tiver pegado comida aleatoriza a comida até ela não estar dentro da cobra
             check = 0;
             food.x = Math.floor(Math.random() * 15 + 1) * box;
             food.y = Math.floor(Math.random() * 15 + 1) * box;
