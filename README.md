@@ -5,9 +5,9 @@ Jogo da Cobrinha feito com **HTML**, **CSS** e **JavaScript**. Para testar é s�
 ![Print do Site do Jogo da Cobrinha](img/Foto-Site.png)
 
 ## Comandos
-**Setinhas do teclado:** Move a Cobra pro lado selecionado.
+- **Setinhas do teclado:** Move a Cobra pro lado selecionado.
 
-**Espaço:** Ativa e desativa a pausa do jogo.
+- **Espaço:** Ativa e desativa a pausa do jogo.
 
 Coisas que ainda serão feitas.
 
