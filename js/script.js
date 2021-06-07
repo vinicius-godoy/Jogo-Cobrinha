@@ -3,6 +3,8 @@ let context = canvas.getContext("2d");
 let box = 32; // Tamanho padrão de cada "caixa" do jogo
 let pontuacao = 0;
 let pontuacaoMax = 0;
+let directionBeforePause;
+let pause = false;
 let check;
 let change = 0;
 let snake = [];
@@ -76,57 +78,66 @@ function update(event){
     if(event.keyCode == 38 && direction != "down") direction = "up";
     if(event.keyCode == 39 && direction != "left") direction = "right";
     if(event.keyCode == 40 && direction != "up") direction = "down";
+    if(event.keyCode == 32) { // Se pressionar o espaço salva a direção que estava indo e pausa
+        if(pause == false){
+            directionBeforePause = direction;
+            direction = 0; pause = true;
+        }else{
+            direction = directionBeforePause; pause = false;
+        }
+    } 
 }
 
 
 function iniciarJogo(){
-    //If statements pra definir o loop da cobrinha no mapa
-    if(snake[0].x > 15 * box) snake[0].x = 0; 
-    if(snake[0].x < 0) snake[0].x = 16 * box;
-    if(snake[0].y > 15 * box) snake[0].y = 0;
-    if(snake[0].y < 0) snake[0].y = 16 * box;
+    if(pause == false){
+        //If statements pra definir o loop da cobrinha no mapa
+        if(snake[0].x > 15 * box) snake[0].x = 0; 
+        if(snake[0].x < 0) snake[0].x = 16 * box;
+        if(snake[0].y > 15 * box) snake[0].y = 0;
+        if(snake[0].y < 0) snake[0].y = 16 * box;
 
-    for(i = 1; i < snake.length; i++){
-        if(snake[0].x == snake[i].x && snake[0].y == snake[i].y){
-            endGame();
-        }
-    }
-
-    criarBG();
-    criarCobrinha();
-    drawFood();
-    updateScore();
-
-    let snakeX = snake[0].x;
-    let snakeY = snake[0].y;
-
-    //Adiciona uma caixa pra direção que está indo
-    if(direction == "right") snakeX += box; 
-    if(direction == "left") snakeX -= box;
-    if(direction == "up") snakeY -= box;
-    if(direction == "down") snakeY += box;
-
-    if(snakeX != food.x || snakeY != food.y){ //Exclui a última caixa se não tiver pegado comida
-        snake.pop();
-    }else{
-        do{ // Se tiver pegado comida aleatoriza a comida até ela não estar dentro da cobra
-            check = 0;
-            food.x = Math.floor(Math.random() * 15 + 1) * box;
-            food.y = Math.floor(Math.random() * 15 + 1) * box;
-            for(i = 0; i < snake.length; i++){
-                if(food.x == snake[i].x && food.y == snake[i].y){check++;}
+        for(i = 1; i < snake.length; i++){
+            if(snake[0].x == snake[i].x && snake[0].y == snake[i].y){
+                endGame();
             }
-        }while(check);
-        pontuacao++;
+        }
+
+        criarBG();
+        criarCobrinha();
+        drawFood();
+        updateScore();
+
+        let snakeX = snake[0].x;
+        let snakeY = snake[0].y;
+
+        //Adiciona uma caixa pra direção que está indo
+        if(direction == "right") snakeX += box; 
+        if(direction == "left") snakeX -= box;
+        if(direction == "up") snakeY -= box;
+        if(direction == "down") snakeY += box;
+
+        if(snakeX != food.x || snakeY != food.y){ //Exclui a última caixa se não tiver pegado comida
+            snake.pop();
+        }else{
+            do{ // Se tiver pegado comida aleatoriza a comida até ela não estar dentro da cobra
+                check = 0;
+                food.x = Math.floor(Math.random() * 15 + 1) * box;
+                food.y = Math.floor(Math.random() * 15 + 1) * box;
+                for(i = 0; i < snake.length; i++){
+                    if(food.x == snake[i].x && food.y == snake[i].y){check++;}
+                }
+            }while(check);
+            pontuacao++;
+        }
+
+        let newHead = { 
+            x: snakeX,
+            y: snakeY
+        }
+
+        snake.unshift(newHead); //Define a última posição calculada como a cabeça da cobra
     }
-
-    let newHead = { 
-        x: snakeX,
-        y: snakeY
-    }
-
-    snake.unshift(newHead); //Define a última posição calculada como a cabeça da cobra
-
 }
 
 let jogo = setInterval(iniciarJogo, 100); //Roda a função do jogo a cada 100 milisegundos
