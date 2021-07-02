@@ -91,6 +91,22 @@ function endGame(){ // Encerra o jogo e reinicia todas as configurações necess
     }
 }
 
+function winGame(){
+    if(snake.length == 256){
+        alert("PARABÉNS!!! VOCÊ GANHOU O JOGO!");
+        highscore = score;
+        saveScore(highscore);
+        
+        score = 0;
+        direction = 0;
+        snake.length = 1;
+        snake[0] = {
+        x: 8 * box,
+        y: 8 * box
+        }
+    }
+}
+
 function checkFood(){ // Função pra checar se a comida não está sendo criada dentro da cobra
     do{
         check = 0;
