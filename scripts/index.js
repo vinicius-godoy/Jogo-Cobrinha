@@ -16,6 +16,10 @@ const RIGHT_ARROW = 39;
 const DOWN_ARROW = 40;
 const SPACE_BAR = 32;
 
+// Audio Files
+const hurt = new Audio('../assets/audio/hurt.wav');
+const eat = new Audio('../assets/audio/eat.wav');
+
 const canvas = document.getElementById("snake"); 
 const context = canvas.getContext("2d");
 
@@ -135,7 +139,10 @@ function gameTick() {
 
     for (i = 1; i < snake.length; i++) {
         const isSelfColliding = snake[0].x === snake[i].x && snake[0].y === snake[i].y;
-        if (isSelfColliding) return endGame();
+        if (isSelfColliding) {
+            hurt.play();
+            return endGame();
+        }
     }
 
     drawBackground();
@@ -156,6 +163,7 @@ function gameTick() {
     const isCollidingWithFood = snakeHeadX === food.x && snakeHeadY === food.y;
 
     if (isCollidingWithFood) {
+        eat.play();
         score++;
         spawnFood();
     } else {
