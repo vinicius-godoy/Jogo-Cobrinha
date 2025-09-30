@@ -1,6 +1,7 @@
 // Variáveis para montar e manipular o canvas
 let canvas = document.getElementById("snake"); 
 let context = canvas.getContext("2d");
+let directionBuffer;
 const box = 32; // Tamanho padrão de cada "caixa" do jogo
 let snake = [];
 snake[0] = { // Inicializa o array da cobra no meio do canvas
@@ -119,10 +120,10 @@ function checkFood(){ // Função pra checar se a comida não está sendo criada
 }
 
 function update(event){
-    if(event.keyCode == 37 && direction != "right") direction = "left";
-    if(event.keyCode == 38 && direction != "down") direction = "up";
-    if(event.keyCode == 39 && direction != "left") direction = "right";
-    if(event.keyCode == 40 && direction != "up") direction = "down";
+    if(event.keyCode == 37 && direction != "right") directionBuffer = "left";
+    if(event.keyCode == 38 && direction != "down") directionBuffer = "up";
+    if(event.keyCode == 39 && direction != "left") directionBuffer = "right";
+    if(event.keyCode == 40 && direction != "up") directionBuffer = "down";
     if(event.keyCode == 32) { // Se pressionar o espaço salva a direção que estava indo e pausa
         if(pause == false){
             directionBeforePause = direction;
@@ -158,6 +159,8 @@ function runGame(){
         // Define as variáveis com o valor da cabeça da cobrinha pra incrementá-la
         let snakeX = snake[0].x;
         let snakeY = snake[0].y;
+
+        if(directionBuffer) direction = directionBuffer;
 
         // Adiciona uma caixa pra direção que está indo
         if(direction == "right") snakeX += box; 
