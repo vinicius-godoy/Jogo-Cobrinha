@@ -1,34 +1,29 @@
-// Variáveis para montar e manipular o canvas
-let canvas = document.getElementById("snake"); 
-let context = canvas.getContext("2d");
+const canvas = document.getElementById("snake"); 
+const context = canvas.getContext("2d");
 let directionBuffer;
-const box = 32; // Tamanho padrão de cada "caixa" do jogo
-let snake = [];
-snake[0] = { // Inicializa o array da cobra no meio do canvas
+const box = 32;
+const snake = [];
+snake[0] = {
     x: 8 * box,
     y: 8 * box
 }
-let direction; // Direção da cobra
-let food = { // Inicializa a comida em algum ponto do canvas
+let direction;
+const food = {
     x: Math.floor(Math.random() * 15 + 1) * box,
     y: Math.floor(Math.random() * 15 + 1) * box
 }
-// Variáveis de pontuação e tema do site
 let score = 0;
 let highscore;
-// Pegar a pontuação máxima, se ela não estiver no localStorage usar zero
-if(getScore() == null || getScore() == "null"){ 
+if(getHighscore() == null || getHighscore() == "null"){ 
     highscore = 0;
 }else{
-    highscore = getScore();
+    highscore = getHighscore();
 }
 let theme = 0;
-// Variáveis de outras funções do jogo
 let directionBeforePause;
 let pause = false;
 let check;
 
-/* Funções da página */
 function changeTheme(){
     if(theme == 0){
         document.documentElement.style
@@ -45,42 +40,41 @@ function changeTheme(){
     }
 }
 
-function updateScore(){ // Atualiza a pontuação
+function updateScore(){
     document.getElementById("pontuacao").innerHTML = "Pontuação: " + score; 
     document.getElementById("pontuacaoMax").innerHTML = "Pontuação Máx: " + highscore; 
 }
 
-function saveScore(hs){
+function saveHighscore(hs){
     localStorage.setItem('highscore', hs);
 }
 
-function getScore(){
+function getHighscore(){
     let hs = localStorage.getItem('highscore');
     return hs;
 }
 
-/* Funções do jogo da Cobrinha */
-function drawBG(){ // Desenha o canvas completo em verde a cada execução
+function drawBackground(){
     context.fillStyle = "lightgreen";
     context.fillRect(0, 0, 16 * box, 16 * box);
 }
 
-function drawSnake(){ // Desenha a cobra a cada execução
+function drawSnake(){
     for(i = 0; i < snake.length; i++){
         context.fillStyle = "green";
         context.fillRect(snake[i].x, snake[i].y, box, box);
     }
 }
 
-function drawFood(){ // Desenha a comida a cada execução
+function drawFood(){
     context.fillStyle = "red";
     context.fillRect(food.x, food.y, box, box);
 }
 
-function endGame(){ // Encerra o jogo e reinicia todas as configurações necessárias
+function endGame(){
     if(highscore < score){
         highscore = score;
-        saveScore(highscore)
+        saveHighscore(highscore)
     } 
     alert("Game Over :( | Pontuação: " + score + " | Pontuação Máxima: " + highscore);
     score = 0;
@@ -96,7 +90,7 @@ function winGame(){
     if(snake.length == 256){
         alert("PARABÉNS!!! VOCÊ GANHOU O JOGO!");
         highscore = score;
-        saveScore(highscore);
+        saveHighscore(highscore);
         
         score = 0;
         direction = 0;
@@ -108,7 +102,7 @@ function winGame(){
     }
 }
 
-function checkFood(){ // Função pra checar se a comida não está sendo criada dentro da cobra
+function checkFood(){
     do{
         check = 0;
         food.x = Math.floor(Math.random() * 15 + 1) * box;
@@ -119,12 +113,12 @@ function checkFood(){ // Função pra checar se a comida não está sendo criada
     }while(check);
 }
 
-function update(event){
+function handleKeydown(event){
     if(event.keyCode == 37 && direction != "right") directionBuffer = "left";
     if(event.keyCode == 38 && direction != "down") directionBuffer = "up";
     if(event.keyCode == 39 && direction != "left") directionBuffer = "right";
     if(event.keyCode == 40 && direction != "up") directionBuffer = "down";
-    if(event.keyCode == 32) { // Se pressionar o espaço salva a direção que estava indo e pausa
+    if(event.keyCode == 32) {
         if(pause == false){
             directionBeforePause = direction;
             direction = 0; pause = true;
@@ -134,58 +128,49 @@ function update(event){
     } 
 }
 
-function runGame(){
-    // Primeiro verifica se o jogo está pausado para rodá-lo
+function gameTick(){
     if(pause == false){
-        // Condicionais pra definir o teleporte da cobrinha nas extremidades no mapa
         if(snake[0].x > 15 * box) snake[0].x = 0; 
         if(snake[0].x < 0) snake[0].x = 16 * box;
         if(snake[0].y > 15 * box) snake[0].y = 0;
         if(snake[0].y < 0) snake[0].y = 16 * box;
 
-        // Verifica se a cobrinha está colidindo com o próprio corpo e encerra o jogo se estiver
         for(i = 1; i < snake.length; i++){
             if(snake[0].x == snake[i].x && snake[0].y == snake[i].y){
                 endGame();
             }
         }
 
-        // Roda todas as funções essenciais pro jogo
-        drawBG();
+        drawBackground();
         drawSnake();
         drawFood();
         updateScore();
 
-        // Define as variáveis com o valor da cabeça da cobrinha pra incrementá-la
         let snakeX = snake[0].x;
         let snakeY = snake[0].y;
 
         if(directionBuffer) direction = directionBuffer;
 
-        // Adiciona uma caixa pra direção que está indo
         if(direction == "right") snakeX += box; 
         if(direction == "left") snakeX -= box;
         if(direction == "up") snakeY -= box;
         if(direction == "down") snakeY += box;
 
-        // Exclui a última caixa se não tiver pegado comida
         if(snakeX != food.x || snakeY != food.y){ 
             snake.pop();
         }else{
-            // Se tiver pegado comida, aleatoriza a comida até ela não estar dentro da cobra
             checkFood();
             score++;
         }
 
-        // Cria uma variável pra passar o valor da nova cabeça pro array
         let newHead = { 
             x: snakeX,
             y: snakeY
         }
 
-        snake.unshift(newHead); // Adiciona na primeira posição a nova cabeça calculada
+        snake.unshift(newHead);
     }
 }
 
-document.addEventListener('keydown', update); // Escuta as teclas clicadas
-let game = setInterval(runGame, 100); //Roda a função do jogo a cada 100 milisegundos
+document.addEventListener('keydown', handleKeydown);
+let game = setInterval(gameTick, 100);
