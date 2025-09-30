@@ -19,26 +19,9 @@ if(getHighscore() == null || getHighscore() == "null"){
 }else{
     highscore = getHighscore();
 }
-let theme = 0;
 let directionBeforePause;
 let pause = false;
 let check;
-
-function changeTheme(){
-    if(theme == 0){
-        document.documentElement.style
-            .setProperty('--cor-primaria', 'rgb(216, 216, 216)');
-        document.documentElement.style
-            .setProperty('--cor-secundaria', 'rgba(0, 0, 0, 0.85)');
-        theme++;
-    }else{
-        document.documentElement.style
-            .setProperty('--cor-primaria', 'rgba(0, 0, 0, 0.85)');
-        document.documentElement.style
-            .setProperty('--cor-secundaria', 'rgb(216, 216, 216)');
-        theme--;
-    }
-}
 
 function updateScore(){
     document.getElementById("pontuacao").innerHTML = "Pontuação: " + score; 
