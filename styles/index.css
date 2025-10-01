@@ -53,6 +53,14 @@ h1 {
   transform: translate(-50%, -50%);
   width: 5rem;
   display: none;
+  mask: linear-gradient(-60deg, #000 30%, #0005, #000 70%) right/350% 100%;
+  animation: shimmer 2.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    mask-position: left
+  }
 }
 
 #game-info {
