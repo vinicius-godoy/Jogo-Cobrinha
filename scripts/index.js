@@ -20,8 +20,12 @@ const SPACE_BAR = 32;
 const hurt = new Audio('../assets/audio/hurt.wav');
 const eat = new Audio('../assets/audio/eat.wav');
 
-const canvas = document.getElementById("snake"); 
+const canvas = document.getElementById("game-canvas");
 const context = canvas.getContext("2d");
+const pauseIcon = document.getElementById("pause-icon");
+canvas.width = GRID_SIZE * BOX_SIZE_IN_PX;
+canvas.height = GRID_SIZE * BOX_SIZE_IN_PX;
+canvas.parentElement.style.maxWidth = GRID_SIZE * BOX_SIZE_IN_PX + "px";
 
 let score = 0;
 let highscore = 0;
@@ -41,8 +45,8 @@ const food = {
 }
 
 function updateScore() {
-  document.getElementById("pontuacao").innerHTML = "Pontuação: " + score; 
-  document.getElementById("pontuacaoMax").innerHTML = "Pontuação Máx: " + highscore; 
+  document.getElementById("score").innerHTML = score; 
+  document.getElementById("highscore").innerHTML = highscore;
 }
 
 function saveHighscore(newHighscore) {
@@ -123,6 +127,8 @@ function handleKeydown(event) {
   if (event.keyCode === RIGHT_ARROW && direction !== LEFT) directionBuffer = RIGHT;
   if (event.keyCode === DOWN_ARROW && direction !== UP) directionBuffer = DOWN;
   if (event.keyCode === SPACE_BAR) {
+    pauseIcon.style.display = isPaused ? "none" : "flex";
+    canvas.style.filter = isPaused ? "none" : "blur(2px) grayscale(50%)";
     directionBeforePause = isPaused ? NONE : direction;
     direction = isPaused ? directionBeforePause : NONE;
     isPaused = !isPaused;
@@ -163,9 +169,9 @@ function gameTick() {
   const isCollidingWithFood = snakeHeadX === food.x && snakeHeadY === food.y;
 
   if (isCollidingWithFood) {
-    eat.play();
     score++;
     spawnFood();
+    eat.play();
   } else {
     snake.pop();
   }

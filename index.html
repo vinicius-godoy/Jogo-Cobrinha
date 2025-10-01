@@ -5,22 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
     <link rel="stylesheet" href="./styles/index.css">
+    <link rel="stylesheet" href="./styles/reset.css">
     <script defer src="./scripts/index.js"></script>
-    <script defer src="./scripts/theme.js"></script>
+    <!-- Icons -->
     <script src="https://kit.fontawesome.com/078b7f12c7.js" crossorigin="anonymous"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
   </head>
 
   <body>
-    <div id="wrapper">
-      <h1>Snake Game!</h1>
-      <canvas id="snake" width="512" height="512"></canvas>
-      <div class="menu-botoes">
-        <h3 id="pontuacao">Pontuação: 0</h3>
-        <h3 id="pontuacaoMax">Pontuação Máx: 0</h3>
-        <button role="button" class="botao" onclick="changeTheme()">
-          <i id="icone-modo" class="fas fa-adjust"></i>
-        </button>
+    <div id="container">
+      <h1>Snake Game</h1>
+      <div id="game-area">
+        <canvas id="game-canvas"></canvas>
+        <img id="pause-icon" src="./assets/icons/pause.svg" alt="Pause" />
       </div>
+      <ul id="game-info">
+        <li>Score: <span id="score">0</span></li>
+        <li>Highscore: <span id="highscore">0</span></li>
+      </ul>
     </div>
   </body>
 </html>
