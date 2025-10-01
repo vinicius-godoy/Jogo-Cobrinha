@@ -120,8 +120,8 @@ function spawnFood() {
 
   do {
     isFoodInsideSnake = false;
-    food.x = Math.floor(Math.random() * 15 + 1) * BOX_SIZE_IN_PX;
-    food.y = Math.floor(Math.random() * 15 + 1) * BOX_SIZE_IN_PX;
+    food.x = Math.floor(Math.random() * (GRID_SIZE - 1) + 1) * BOX_SIZE_IN_PX;
+    food.y = Math.floor(Math.random() * (GRID_SIZE - 1) + 1) * BOX_SIZE_IN_PX;
     isFoodInsideSnake = snake.some(segment => segment.x === food.x && segment.y === food.y);
   } while (isFoodInsideSnake);
 }
