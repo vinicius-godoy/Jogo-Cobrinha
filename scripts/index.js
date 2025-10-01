@@ -19,6 +19,7 @@ const SPACE_BAR = 32;
 // Audio Files
 const hurt = new Audio('../assets/audio/hurt.wav');
 const eat = new Audio('../assets/audio/eat.wav');
+const pause = new Audio('../assets/audio/pause.wav');
 
 const canvas = document.getElementById("game-canvas");
 const context = canvas.getContext("2d");
@@ -127,6 +128,7 @@ function handleKeydown(event) {
   if (event.keyCode === RIGHT_ARROW && direction !== LEFT) directionBuffer = RIGHT;
   if (event.keyCode === DOWN_ARROW && direction !== UP) directionBuffer = DOWN;
   if (event.keyCode === SPACE_BAR) {
+    pause.play();
     pauseIcon.style.display = isPaused ? "none" : "flex";
     canvas.style.filter = isPaused ? "none" : "blur(2px) grayscale(50%)";
     directionBeforePause = isPaused ? NONE : direction;
