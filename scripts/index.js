@@ -1,6 +1,7 @@
 // Game Constants
 const BOX_SIZE_IN_PX = 32;
 const GRID_SIZE = 16;
+const TOUCH_THRESHHOLD_IN_PX = 15;
 
 // Directions
 const NONE = 0;
@@ -34,6 +35,10 @@ let direction = NONE;
 let directionBuffer;
 let directionBeforePause;
 let isPaused = false;
+let touchstartX = 0;
+let touchendX = 0;
+let touchstartY = 0;
+let touchendY = 0;
 const snake = [];
 
 snake[0] = {
@@ -137,6 +142,19 @@ function handleKeydown(event) {
   } 
 }
 
+function checkDirection() {
+  const movementX = touchendX - touchstartX;
+  const movementY = touchendY - touchstartY;
+
+  if (Math.abs(movementX) >= Math.abs(movementY)) {
+    if (movementX > TOUCH_THRESHHOLD_IN_PX && direction !== LEFT) directionBuffer = RIGHT;
+    if (movementX < -TOUCH_THRESHHOLD_IN_PX && direction !== RIGHT) directionBuffer = LEFT;
+  } else {
+    if (movementY > TOUCH_THRESHHOLD_IN_PX && direction !== UP) directionBuffer = DOWN;
+    if (movementY < -TOUCH_THRESHHOLD_IN_PX && direction !== DOWN) directionBuffer = UP;
+  }
+}
+
 function gameTick() {
   if (isPaused) return;
 
@@ -189,6 +207,15 @@ function gameTick() {
 function main() {
   if(getHighscore()) highscore = getHighscore();
   document.addEventListener('keydown', handleKeydown);
+  document.addEventListener('touchstart', e => {
+    touchstartX = e.changedTouches[0].screenX
+    touchstartY = e.changedTouches[0].screenY
+  })
+  document.addEventListener('touchend', e => {
+    touchendX = e.changedTouches[0].screenX
+    touchendY = e.changedTouches[0].screenY
+    checkDirection()
+  })
   let game = setInterval(gameTick, 100);
 }
 
