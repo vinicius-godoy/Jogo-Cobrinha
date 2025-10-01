@@ -39,6 +39,7 @@ h1 {
   position: relative;
   width: 100vmin;
   aspect-ratio: 1 / 1;
+  max-width: 512px;
 }
 
 #game-canvas {

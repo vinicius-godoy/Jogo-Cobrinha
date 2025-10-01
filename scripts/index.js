@@ -27,7 +27,6 @@ const context = canvas.getContext("2d");
 const pauseIcon = document.getElementById("pause-icon");
 canvas.width = GRID_SIZE * BOX_SIZE_IN_PX;
 canvas.height = GRID_SIZE * BOX_SIZE_IN_PX;
-canvas.parentElement.style.maxWidth = GRID_SIZE * BOX_SIZE_IN_PX + "px";
 
 let score = 0;
 let highscore = 0;
@@ -158,9 +157,9 @@ function checkDirection() {
 function gameTick() {
   if (isPaused) return;
 
-  if (snake[0].x > 15 * BOX_SIZE_IN_PX) snake[0].x = 0; 
+  if (snake[0].x > (GRID_SIZE - 1) * BOX_SIZE_IN_PX) snake[0].x = 0; 
   if (snake[0].x < 0) snake[0].x = GRID_SIZE * BOX_SIZE_IN_PX;
-  if (snake[0].y > 15 * BOX_SIZE_IN_PX) snake[0].y = 0;
+  if (snake[0].y > (GRID_SIZE - 1) * BOX_SIZE_IN_PX) snake[0].y = 0;
   if (snake[0].y < 0) snake[0].y = GRID_SIZE * BOX_SIZE_IN_PX;
 
   for (i = 1; i < snake.length; i++) {
