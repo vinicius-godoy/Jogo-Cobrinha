@@ -18,9 +18,9 @@ const DOWN_ARROW = 40;
 const SPACE_BAR = 32;
 
 // Audio Files
-const hurt = new Audio('../assets/audio/hurt.wav');
-const eat = new Audio('../assets/audio/eat.wav');
-const pause = new Audio('../assets/audio/pause.wav');
+const hurt = new Audio('../audio/hurt.wav');
+const eat = new Audio('../audio/eat.wav');
+const pause = new Audio('../audio/pause.wav');
 
 const canvas = document.getElementById("game-canvas");
 const context = canvas.getContext("2d");

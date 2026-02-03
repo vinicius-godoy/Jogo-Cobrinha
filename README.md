@@ -2,7 +2,7 @@
 
 Jogo da Cobrinha feito com **HTML**, **CSS** e **JavaScript**. Para testar é só baixar os arquivos e abrir em um navegador!
 
-![Print do Site do Jogo da Cobrinha](assets/images/Foto-Site.png)
+![Print do Site do Jogo da Cobrinha](assets/Foto-Site.png)
 
 ## Comandos
 - **Setinhas do teclado:** Move a Cobra pro lado selecionado.
