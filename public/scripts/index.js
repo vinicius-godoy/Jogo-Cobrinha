@@ -2,6 +2,7 @@
 const BOX_SIZE_IN_PX = 32;
 const GRID_SIZE = 16;
 const TOUCH_THRESHHOLD_IN_PX = 15;
+const TICK_INTERVAL_IN_MS = 100;
 
 // Directions
 const NONE = 0;
@@ -46,6 +47,7 @@ snake[0] = {
   x: (GRID_SIZE / 2) * BOX_SIZE_IN_PX,
   y: (GRID_SIZE / 2) * BOX_SIZE_IN_PX
 }
+
 const food = {
   x: Math.floor(Math.random() * (GRID_SIZE - 1) + 1) * BOX_SIZE_IN_PX,
   y: Math.floor(Math.random() * (GRID_SIZE - 1) + 1) * BOX_SIZE_IN_PX
@@ -83,6 +85,19 @@ function drawFood() {
   context.fillRect(food.x, food.y, BOX_SIZE_IN_PX, BOX_SIZE_IN_PX);
 }
 
+function resetGame() {
+  direction = NONE;
+  directionBuffer = NONE;
+  score = 0;
+  isMoving = false;
+  isPaused = false;
+  snake.length = 1;
+  snake[0] = {
+    x: (GRID_SIZE / 2) * BOX_SIZE_IN_PX,
+    y: (GRID_SIZE / 2) * BOX_SIZE_IN_PX
+  };
+}
+
 function endGame() {
   if (score > highscore) {
     highscore = score;
@@ -90,32 +105,15 @@ function endGame() {
   }
   alert("Game Over :( | Pontuação: " + score + " | Pontuação Máxima: " + highscore);
 
-  direction = NONE;
-  directionBuffer = NONE;
-  score = 0;
-  isMoving = false;
-  snake.length = 1;
-  snake[0] = {
-    x: 8 * BOX_SIZE_IN_PX,
-    y: 8 * BOX_SIZE_IN_PX
-  };
+  resetGame();
 }
 
 function winGame() {
-  if (snake.length === GRID_SIZE * GRID_SIZE) {
-    alert("PARABÉNS!!! VOCÊ GANHOU O JOGO!");
-    highscore = score;
-    saveHighscore(highscore);
-    
-    score = 0;
-    direction = NONE;
-    directionBuffer = NONE;
-    snake.length = 1;
-    snake[0] = {
-        x: 8 * BOX_SIZE_IN_PX,
-        y: 8 * BOX_SIZE_IN_PX
-    }
-  }
+  alert("PARABÉNS!!! VOCÊ GANHOU O JOGO!");
+  highscore = score;
+  saveHighscore(highscore);
+  
+  resetGame();
 }
 
 function spawnFood() {
@@ -201,8 +199,9 @@ function gameTick() {
 
   if (isCollidingWithFood) {
     score++;
-    spawnFood();
     eat.play();
+    if (score === GRID_SIZE * GRID_SIZE) return winGame();
+    spawnFood();
   } else {
     snake.pop();
   }
@@ -235,7 +234,7 @@ function main() {
       deactivateStartMenu();
     }
   })
-  let game = setInterval(gameTick, 100);
+  setInterval(gameTick, TICK_INTERVAL_IN_MS);
 }
 
 main();
