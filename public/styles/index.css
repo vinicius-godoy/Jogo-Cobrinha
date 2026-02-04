@@ -65,6 +65,15 @@ h1 {
 }
 
 #game-info {
+  width: 100%;
+  display: flex;
+}
+
+#game-info li {
+  font-size: 1.5rem;
+}
+
+#game-scoreboard {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -74,6 +83,32 @@ h1 {
   margin: 0;
 }
 
-#game-info li {
+#game-scoreboard[data-startup="true"] {
+  display: none;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.start-message {
+  width: 100%;
+  display: none;
+  justify-content: center;
+  animation: blinker 2s linear infinite;
   font-size: 1.5rem;
+}
+
+@media (pointer: fine) {
+  .start-message.desktop[data-startup="true"] {
+    display: flex;
+  }
+}
+
+@media (pointer: coarse) {
+  .start-message.mobile[data-startup="true"] {
+    display: flex;
+  }
 }

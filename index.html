@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Game</title>
+    <link rel="icon" type="image/x-icon" href="./public/images/favicon.ico">
     <link rel="stylesheet" href="./public/styles/index.css">
     <link rel="stylesheet" href="./public/styles/reset.css">
     <script defer src="./public/scripts/index.js"></script>
@@ -16,16 +17,20 @@
   </head>
 
   <body>
-    <div id="container">
+    <main id="container">
       <h1>Snake Game</h1>
       <div id="game-area">
         <canvas id="game-canvas"></canvas>
         <img id="pause-icon" src="./public/icons/pause.svg" alt="Pause" />
       </div>
-      <ul id="game-info">
-        <li>Score: <span id="score">0</span></li>
-        <li>Highscore: <span id="highscore">0</span></li>
-      </ul>
-    </div>
+      <div id="game-info">
+        <ul id="game-scoreboard" data-startup="true">
+          <li>Score: <span id="score">0</span></li>
+          <li>Highscore: <span id="highscore">0</span></li>
+        </ul>
+        <p class="start-message desktop" data-startup="true">Press any arrow key to start</p>
+        <p class="start-message mobile" data-startup="true">Swipe on the screen to start</p>
+      </div>
+    </main>
   </body>
 </html>

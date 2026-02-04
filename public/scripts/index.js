@@ -28,6 +28,8 @@ const pauseIcon = document.getElementById("pause-icon");
 canvas.width = GRID_SIZE * BOX_SIZE_IN_PX;
 canvas.height = GRID_SIZE * BOX_SIZE_IN_PX;
 
+let isStartMenu = true;
+let isMoving = false;
 let score = 0;
 let highscore = 0;
 let direction = NONE;
@@ -126,19 +128,27 @@ function spawnFood() {
   } while (isFoodInsideSnake);
 }
 
+function deactivateStartMenu() {
+  isStartMenu = false;
+  document.querySelector(".start-message.desktop").setAttribute("data-startup", "false");
+  document.querySelector(".start-message.mobile").setAttribute("data-startup", "false");
+  document.querySelector("#game-scoreboard").setAttribute("data-startup", "false");
+}
+
 function handleKeydown(event) {
-  if (event.keyCode === LEFT_ARROW && direction !== RIGHT) directionBuffer = LEFT;
-  if (event.keyCode === UP_ARROW && direction !== DOWN) directionBuffer = UP;
-  if (event.keyCode === RIGHT_ARROW && direction !== LEFT) directionBuffer = RIGHT;
-  if (event.keyCode === DOWN_ARROW && direction !== UP) directionBuffer = DOWN;
-  if (event.keyCode === SPACE_BAR) {
+  if (event.keyCode === LEFT_ARROW && direction !== RIGHT) {directionBuffer = LEFT; isMoving = true;}
+  if (event.keyCode === UP_ARROW && direction !== DOWN) {directionBuffer = UP; isMoving = true;}
+  if (event.keyCode === RIGHT_ARROW && direction !== LEFT) {directionBuffer = RIGHT; isMoving = true;}
+  if (event.keyCode === DOWN_ARROW && direction !== UP) {directionBuffer = DOWN; isMoving = true;}
+  if (event.keyCode === SPACE_BAR && !isStartMenu) {
     pause.play();
     pauseIcon.style.display = isPaused ? "none" : "flex";
     canvas.style.filter = isPaused ? "none" : "blur(2px) grayscale(50%)";
     directionBeforePause = isPaused ? NONE : direction;
     direction = isPaused ? directionBeforePause : NONE;
     isPaused = !isPaused;
-  } 
+  }
+  if (isStartMenu && isMoving) deactivateStartMenu();
 }
 
 function checkDirection() {
@@ -146,12 +156,14 @@ function checkDirection() {
   const movementY = touchendY - touchstartY;
 
   if (Math.abs(movementX) >= Math.abs(movementY)) {
-    if (movementX > TOUCH_THRESHHOLD_IN_PX && direction !== LEFT) directionBuffer = RIGHT;
-    if (movementX < -TOUCH_THRESHHOLD_IN_PX && direction !== RIGHT) directionBuffer = LEFT;
+    if (movementX > TOUCH_THRESHHOLD_IN_PX && direction !== LEFT) {directionBuffer = RIGHT; isMoving = true;}
+    if (movementX < -TOUCH_THRESHHOLD_IN_PX && direction !== RIGHT) {directionBuffer = LEFT; isMoving = true;}
   } else {
-    if (movementY > TOUCH_THRESHHOLD_IN_PX && direction !== UP) directionBuffer = DOWN;
-    if (movementY < -TOUCH_THRESHHOLD_IN_PX && direction !== DOWN) directionBuffer = UP;
+    if (movementY > TOUCH_THRESHHOLD_IN_PX && direction !== UP) {directionBuffer = DOWN; isMoving = true;}
+    if (movementY < -TOUCH_THRESHHOLD_IN_PX && direction !== DOWN) {directionBuffer = UP; isMoving = true;}
   }
+   
+   if (isStartMenu && isMoving) deactivateStartMenu();
 }
 
 function gameTick() {
