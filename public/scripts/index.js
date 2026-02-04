@@ -93,6 +93,7 @@ function endGame() {
   direction = NONE;
   directionBuffer = NONE;
   score = 0;
+  isMoving = false;
   snake.length = 1;
   snake[0] = {
     x: 8 * BOX_SIZE_IN_PX,
@@ -152,6 +153,7 @@ function handleKeydown(event) {
 }
 
 function checkDirection() {
+  if (isStartMenu) return;
   const movementX = touchendX - touchstartX;
   const movementY = touchendY - touchstartY;
 
@@ -162,8 +164,6 @@ function checkDirection() {
     if (movementY > TOUCH_THRESHHOLD_IN_PX && direction !== UP) {directionBuffer = DOWN; isMoving = true;}
     if (movementY < -TOUCH_THRESHHOLD_IN_PX && direction !== DOWN) {directionBuffer = UP; isMoving = true;}
   }
-   
-   if (isStartMenu && isMoving) deactivateStartMenu();
 }
 
 function gameTick() {
@@ -226,6 +226,14 @@ function main() {
     touchendX = e.changedTouches[0].screenX
     touchendY = e.changedTouches[0].screenY
     checkDirection()
+  })
+  document.addEventListener('click', () => {
+    const isMobile = matchMedia('(pointer:coarse)').matches
+    if (isMobile && isStartMenu) {
+      isMoving = true;
+      directionBuffer = RIGHT;
+      deactivateStartMenu();
+    }
   })
   let game = setInterval(gameTick, 100);
 }
