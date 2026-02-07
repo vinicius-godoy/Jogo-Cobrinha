@@ -1,6 +1,15 @@
-:root{
-  --cor-primaria: rgba(0, 0, 0, 0.85);
-  --cor-secundaria: rgb(216, 216, 216);
+@media (prefers-color-scheme: dark) {
+  :root{
+    --primary-color: rgba(0, 0, 0, 0.85);
+    --secondary-color: rgb(216, 216, 216);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root{
+    --primary-color: rgb(216, 216, 216);
+    --secondary-color: rgba(0, 0, 0, 0.85);
+  }
 }
 
 html, body {
@@ -13,7 +22,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--cor-primaria);
+  background-color: var(--primary-color);
 }
 
 * {
@@ -21,7 +30,7 @@ body {
   font-weight: 400;
   font-style: normal;
   text-transform: uppercase;
-  color: var(--cor-secundaria);
+  color: var(--secondary-color);
 }
 
 h1 {
