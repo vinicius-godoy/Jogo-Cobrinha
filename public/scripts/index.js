@@ -8,26 +8,26 @@ const THEMES = [
   {
     type: "solid",
     colors: ["green"],
-    code: "8076657378"
+    code: "PLAIN"
   },
   {
     type: "stripe",
     colors: ["green", "darkgreen"],
-    code: "8378657569"
+    code: "STRIPE"
   },
   {
     type: "head",
     colors: ["orange", "white"],
-    code: "677371658269848469"
+    code: "CIGARETTE"
   },
   {
     type: "rainbow",
-    code: "82657378667987"
+    code: "RAINBOW"
   },
   {
     type: "trailing",
     colors: ['brown', '#ffa52f'],
-    code: "776984697982"
+    code: "METEOR"
   }
 ];
 let SNAKE_THEME = THEMES[0];
@@ -38,13 +38,6 @@ const LEFT = 1;
 const RIGHT = 2;
 const UP = 3;
 const DOWN = 4;
-
-// Event KeyCodes
-const LEFT_ARROW = 37;
-const UP_ARROW = 38;
-const RIGHT_ARROW = 39;
-const DOWN_ARROW = 40;
-const SPACE_BAR = 32;
 
 // Audio Files
 const hurt = new Audio('public/audio/hurt.wav');
@@ -59,7 +52,6 @@ canvas.width = GRID_SIZE * BOX_SIZE_IN_PX;
 canvas.height = GRID_SIZE * BOX_SIZE_IN_PX;
 
 let isStartMenu = true;
-let isMoving = false;
 let score = 0;
 let highscore = 0;
 let direction = NONE;
@@ -138,7 +130,6 @@ function resetGame() {
   direction = NONE;
   directionBuffer = NONE;
   score = 0;
-  isMoving = false;
   isPaused = false;
   snake.length = 1;
   snake[0] = {
@@ -183,12 +174,38 @@ function deactivateStartMenu() {
   document.querySelector("#game-scoreboard").setAttribute("data-startup", "false");
 }
 
-function handleKeydown(event) {
-  if (event.keyCode === LEFT_ARROW && direction !== RIGHT) {directionBuffer = LEFT; isMoving = true;}
-  if (event.keyCode === UP_ARROW && direction !== DOWN) {directionBuffer = UP; isMoving = true;}
-  if (event.keyCode === RIGHT_ARROW && direction !== LEFT) {directionBuffer = RIGHT; isMoving = true;}
-  if (event.keyCode === DOWN_ARROW && direction !== UP) {directionBuffer = DOWN; isMoving = true;}
-  if (event.keyCode === SPACE_BAR && !isStartMenu) {
+function checkDirection() {
+  if (isStartMenu) return;
+  const movementX = touchendX - touchstartX;
+  const movementY = touchendY - touchstartY;
+
+  if (Math.abs(movementX) >= Math.abs(movementY)) {
+    if (movementX > TOUCH_THRESHHOLD_IN_PX && direction !== LEFT) directionBuffer = RIGHT;
+    if (movementX < -TOUCH_THRESHHOLD_IN_PX && direction !== RIGHT) directionBuffer = LEFT;
+  } else {
+    if (movementY > TOUCH_THRESHHOLD_IN_PX && direction !== UP) directionBuffer = DOWN;
+    if (movementY < -TOUCH_THRESHHOLD_IN_PX && direction !== DOWN) directionBuffer = UP;
+  }
+}
+
+function checkControls(value, code) {
+  if (value === 'ArrowLeft' && direction !== RIGHT) {
+    directionBuffer = LEFT;
+    if (isStartMenu) deactivateStartMenu();
+  }
+  if (value === 'ArrowUp' && direction !== DOWN) {
+    directionBuffer = UP;
+    if (isStartMenu) deactivateStartMenu();
+  }
+  if (value === 'ArrowRight' && direction !== LEFT) {
+    directionBuffer = RIGHT;
+    if (isStartMenu) deactivateStartMenu();
+  }
+  if (value === 'ArrowDown' && direction !== UP) {
+    directionBuffer = DOWN;
+    if (isStartMenu) deactivateStartMenu();
+  }
+  if (code === 'Space' && !isStartMenu) {
     pause.play();
     pauseIcon.style.display = isPaused ? "none" : "flex";
     canvas.style.filter = isPaused ? "none" : "blur(2px) grayscale(50%)";
@@ -196,20 +213,46 @@ function handleKeydown(event) {
     direction = isPaused ? directionBeforePause : NONE;
     isPaused = !isPaused;
   }
-  if (isStartMenu && isMoving) deactivateStartMenu();
 }
 
-function checkDirection() {
-  if (isStartMenu) return;
-  const movementX = touchendX - touchstartX;
-  const movementY = touchendY - touchstartY;
+function checkThemeCode(value) {
+  KEY_BUFFER.push(value.toUpperCase());
+  if (KEY_BUFFER.length > KEY_BUFFER_MAX_LENGTH) KEY_BUFFER.shift();
+  for (const theme of THEMES) {
+    if (KEY_BUFFER.join("").includes(theme.code)) {
+      SNAKE_THEME = theme;
+    }
+  }
+}
 
-  if (Math.abs(movementX) >= Math.abs(movementY)) {
-    if (movementX > TOUCH_THRESHHOLD_IN_PX && direction !== LEFT) {directionBuffer = RIGHT; isMoving = true;}
-    if (movementX < -TOUCH_THRESHHOLD_IN_PX && direction !== RIGHT) {directionBuffer = LEFT; isMoving = true;}
+function handleKeydown(event) {
+  const value = event.key;
+  const code = event.code;
+  const isKey = code.startsWith("Key");
+
+  if (isKey) {
+    checkThemeCode(value);
   } else {
-    if (movementY > TOUCH_THRESHHOLD_IN_PX && direction !== UP) {directionBuffer = DOWN; isMoving = true;}
-    if (movementY < -TOUCH_THRESHHOLD_IN_PX && direction !== DOWN) {directionBuffer = UP; isMoving = true;}
+    checkControls(value, code);
+  }
+}
+
+function handleTouchStart(event) {
+  touchstartX = event.changedTouches[0].screenX
+  touchstartY = event.changedTouches[0].screenY
+}
+
+function handleTouchEnd(event) {
+  touchendX = event.changedTouches[0].screenX
+  touchendY = event.changedTouches[0].screenY
+  checkDirection()
+}
+
+function handleClick() {
+  const isMobile = matchMedia('(pointer:coarse)').matches
+  if (isMobile && isStartMenu) {
+    directionBuffer = RIGHT;
+    deactivateStartMenu();
   }
 }
 
@@ -266,36 +309,9 @@ function gameTick() {
 function main() {
   if(getHighscore()) highscore = getHighscore();
   document.addEventListener('keydown', handleKeydown);
-  document.addEventListener('touchstart', e => {
-    touchstartX = e.changedTouches[0].screenX
-    touchstartY = e.changedTouches[0].screenY
-  })
-  document.addEventListener('touchend', e => {
-    touchendX = e.changedTouches[0].screenX
-    touchendY = e.changedTouches[0].screenY
-    checkDirection()
-  })
-  document.addEventListener('click', () => {
-    const isMobile = matchMedia('(pointer:coarse)').matches
-    if (isMobile && isStartMenu) {
-      isMoving = true;
-      directionBuffer = RIGHT;
-      deactivateStartMenu();
-    }
-  })
-  document.addEventListener('keydown', e => {
-    const value = e.keyCode;
-    const isCharacterLetter = (value >= 65 && value <= 90);
-    if (!isCharacterLetter) return;
-    
-    KEY_BUFFER.push(value);
-    if (KEY_BUFFER.length > KEY_BUFFER_MAX_LENGTH) KEY_BUFFER.shift();
-    for (const theme of THEMES) {
-      if (KEY_BUFFER.join("").includes(theme.code)) {
-        SNAKE_THEME = theme;
-      }
-    }
-  })
+  document.addEventListener('touchstart', handleTouchStart);
+  document.addEventListener('touchend', handleTouchEnd);
+  document.addEventListener('click', handleClick);
   setInterval(gameTick, TICK_INTERVAL_IN_MS);
 }
 
