@@ -48,6 +48,7 @@ const KEY_BUFFER = [];
 const canvas = document.getElementById("game-canvas");
 const context = canvas.getContext("2d");
 const pauseIcon = document.getElementById("pause-icon");
+const gameOverMessage = document.getElementById("game-over-message");
 canvas.width = GRID_SIZE * BOX_SIZE_IN_PX;
 canvas.height = GRID_SIZE * BOX_SIZE_IN_PX;
 
@@ -58,6 +59,7 @@ let direction = NONE;
 let directionBuffer;
 let directionBeforePause;
 let isPaused = false;
+let isDead = false;
 let touchstartX = 0;
 let touchendX = 0;
 let touchstartY = 0;
@@ -131,6 +133,9 @@ function resetGame() {
   directionBuffer = NONE;
   score = 0;
   isPaused = false;
+  isDead = false;
+  gameOverMessage.style.display = "none";
+  canvas.style.filter = "none";
   snake.length = 1;
   snake[0] = {
     x: (GRID_SIZE / 2) * BOX_SIZE_IN_PX,
@@ -139,13 +144,13 @@ function resetGame() {
 }
 
 function endGame() {
+  canvas.style.filter = "blur(2px) grayscale(50%)";
+  gameOverMessage.style.display = "block";
+  isDead = true;
   if (score > highscore) {
     highscore = score;
     saveHighscore(highscore);
   }
-  alert("Game Over :( | Pontuação: " + score + " | Pontuação Máxima: " + highscore);
-
-  resetGame();
 }
 
 function winGame() {
@@ -191,6 +196,8 @@ function checkDirection() {
 function handleControlKeydown(event) {
   const value = event.key;
   const code = event.code;
+
+  if (isDead) return resetGame();
 
   if (value === 'ArrowLeft' && direction !== RIGHT) {
     directionBuffer = LEFT;
@@ -254,7 +261,7 @@ function handleClick() {
 }
 
 function gameTick() {
-  if (isPaused) return;
+  if (isPaused || isDead) return;
 
   if (snake[0].x > (GRID_SIZE - 1) * BOX_SIZE_IN_PX) snake[0].x = 0; 
   if (snake[0].x < 0) snake[0].x = GRID_SIZE * BOX_SIZE_IN_PX;
