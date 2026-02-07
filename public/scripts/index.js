@@ -188,7 +188,10 @@ function checkDirection() {
   }
 }
 
-function checkControls(value, code) {
+function handleControlKeydown(event) {
+  const value = event.key;
+  const code = event.code;
+
   if (value === 'ArrowLeft' && direction !== RIGHT) {
     directionBuffer = LEFT;
     if (isStartMenu) deactivateStartMenu();
@@ -215,25 +218,19 @@ function checkControls(value, code) {
   }
 }
 
-function checkThemeCode(value) {
+function handleThemeKeydown(event) {
+  const value = event.key;
+  const code = event.code;
+  const isKey = code.startsWith("Key");
+
+  if (!isKey) return;
+
   KEY_BUFFER.push(value.toUpperCase());
   if (KEY_BUFFER.length > KEY_BUFFER_MAX_LENGTH) KEY_BUFFER.shift();
   for (const theme of THEMES) {
     if (KEY_BUFFER.join("").includes(theme.code)) {
       SNAKE_THEME = theme;
     }
-  }
-}
-
-function handleKeydown(event) {
-  const value = event.key;
-  const code = event.code;
-  const isKey = code.startsWith("Key");
-
-  if (isKey) {
-    checkThemeCode(value);
-  } else {
-    checkControls(value, code);
   }
 }
 
@@ -308,10 +305,11 @@ function gameTick() {
 
 function main() {
   if(getHighscore()) highscore = getHighscore();
-  document.addEventListener('keydown', handleKeydown);
+  document.addEventListener('keydown', handleControlKeydown);
   document.addEventListener('touchstart', handleTouchStart);
   document.addEventListener('touchend', handleTouchEnd);
   document.addEventListener('click', handleClick);
+  document.addEventListener('keydown', handleThemeKeydown);
   setInterval(gameTick, TICK_INTERVAL_IN_MS);
 }
 
