@@ -12,6 +12,7 @@ Just clone the repository and open the good old `index.html` file and it will wo
 
 - **Arrow keys:** Move the snake to the chosen direction.
 - **Space:** Pause/Unpause button.
+- **A-Z:** ???
 
 ## Roadmap
 
