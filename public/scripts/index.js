@@ -219,8 +219,6 @@ function handleControlKeydown(event) {
     pause.play();
     pauseIcon.style.display = isPaused ? "none" : "flex";
     canvas.style.filter = isPaused ? "none" : "blur(2px) grayscale(50%)";
-    directionBeforePause = isPaused ? NONE : direction;
-    direction = isPaused ? directionBeforePause : NONE;
     isPaused = !isPaused;
   }
 }
@@ -322,4 +320,3 @@ function main() {
 }
 
 main();
-
