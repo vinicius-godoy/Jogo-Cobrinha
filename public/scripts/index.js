@@ -208,7 +208,7 @@ function handleControlKeydown(event) {
     directionBuffer = DOWN;
     if (isStartMenu) deactivateStartMenu();
   }
-  if (code === 'Space' && !isStartMenu) {
+  if (code === 'Space' && !isStartMenu && direction !== NONE) {
     pause.play();
     pauseIcon.style.display = isPaused ? "none" : "flex";
     canvas.style.filter = isPaused ? "none" : "blur(2px) grayscale(50%)";
