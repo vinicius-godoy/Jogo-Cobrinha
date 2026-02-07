@@ -1,19 +1,26 @@
-# Jogo da Cobrinha
+# Web Snake Game
 
-Jogo da Cobrinha feito com **HTML**, **CSS** e **JavaScript**. Para testar é só baixar os arquivos e abrir em um navegador!
+![Game Screenshot](assets/Foto-Site.png)
 
-![Print do Site do Jogo da Cobrinha](assets/Foto-Site.png)
+> Responsive web snake game built with static HTML, CSS and JavaScript.
 
-## Comandos
-- **Setinhas do teclado:** Move a Cobra pro lado selecionado.
+## Getting Started
 
-- **Espaço:** Ativa e desativa a pausa do jogo.
+Just clone the repository and open the good old `index.html` file and it will work. Or [click here to test it now](https://snake.viniciusgodoy.com).
 
-Coisas que ainda serão feitas.
+### Controls
 
-- [x] Arrumar Botão de tema.
-- [x] Adicionar Pausa.
-- [ ] Adicionar Vitória caso cubra a tela inteira.
-- [x] Pontuação Máxima salva no navegador.
-- [x] Refatoração do código.
-- [ ] Responsividade para o celular.
+- **Arrow keys:** Move the snake to the chosen direction.
+- **Space:** Pause/Unpause button.
+
+## Roadmap
+
+- [x] Dark and light themes.
+- [x] Pause feature.
+- [x] Victory condition.
+- [x] Highscore saved on browser.
+- [x] Mobile responsiveness.
+- [x] Different snake skins.
+- [ ] Multiple speeds.
+- [ ] Multiple sized maps.
+- [ ] Highscore per speed/sized map.
