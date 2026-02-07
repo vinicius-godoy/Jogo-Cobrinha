@@ -253,6 +253,7 @@ function handleTouchEnd(event) {
 }
 
 function handleClick() {
+  if (isDead) return resetGame();
   const isMobile = matchMedia('(pointer:coarse)').matches
   if (isMobile && isStartMenu) {
     directionBuffer = RIGHT;
