@@ -1,6 +1,6 @@
 # Web Snake Game
 
-![Game Screenshot](assets/Foto-Site.png)
+![Game Screenshot](assets/snake-game.png)
 
 > Responsive web snake game built with static HTML, CSS and JavaScript.
 
