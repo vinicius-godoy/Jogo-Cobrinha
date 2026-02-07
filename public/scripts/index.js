@@ -3,6 +3,34 @@ const BOX_SIZE_IN_PX = 32;
 const GRID_SIZE = 16;
 const TOUCH_THRESHHOLD_IN_PX = 15;
 const TICK_INTERVAL_IN_MS = 100;
+const KEY_BUFFER_MAX_LENGTH = 10;
+const THEMES = [
+  {
+    type: "solid",
+    colors: ["green"],
+    code: "8076657378"
+  },
+  {
+    type: "stripe",
+    colors: ["green", "darkgreen"],
+    code: "8378657569"
+  },
+  {
+    type: "head",
+    colors: ["orange", "white"],
+    code: "677371658269848469"
+  },
+  {
+    type: "rainbow",
+    code: "82657378667987"
+  },
+  {
+    type: "trailing",
+    colors: ['brown', '#ffa52f'],
+    code: "776984697982"
+  }
+];
+let SNAKE_THEME = THEMES[0];
 
 // Directions
 const NONE = 0;
@@ -23,6 +51,7 @@ const hurt = new Audio('public/audio/hurt.wav');
 const eat = new Audio('public/audio/eat.wav');
 const pause = new Audio('public/audio/pause.wav');
 
+const KEY_BUFFER = [];
 const canvas = document.getElementById("game-canvas");
 const context = canvas.getContext("2d");
 const pauseIcon = document.getElementById("pause-icon");
@@ -75,7 +104,27 @@ function drawBackground() {
 
 function drawSnake() {
   for (i = 0; i < snake.length; i++) {
-    context.fillStyle = "green";
+    switch (SNAKE_THEME.type) {
+      case "solid":
+        context.fillStyle = SNAKE_THEME.colors[0];
+        break;
+      case "stripe":
+        context.fillStyle = SNAKE_THEME.colors[i % SNAKE_THEME.colors.length];
+        break;
+      case "head":
+        context.fillStyle = i === 0 ? SNAKE_THEME.colors[0] : SNAKE_THEME.colors[1];
+        break;
+      case "rainbow":
+        context.fillStyle = i === 0 ? 'white' : `hsl(${(i - 1) * 360 / snake.length}, 100%, 50%)`;
+        break;
+      case "trailing":
+        const baseValue = Math.floor(255 * (1 - i / snake.length));
+        const randomVariation = Math.floor(Math.random() * 100);
+        const totalValue = Math.max(Math.min(baseValue + randomVariation, 255), 10);
+        const hexValue = totalValue.toString(16).padStart(2, '0');
+        context.fillStyle = i === 0 ? SNAKE_THEME.colors[0] : SNAKE_THEME.colors[1] + hexValue;
+        break;
+    }
     context.fillRect(snake[i].x, snake[i].y, BOX_SIZE_IN_PX, BOX_SIZE_IN_PX);
   }
 }
@@ -232,6 +281,19 @@ function main() {
       isMoving = true;
       directionBuffer = RIGHT;
       deactivateStartMenu();
+    }
+  })
+  document.addEventListener('keydown', e => {
+    const value = e.keyCode;
+    const isCharacterLetter = (value >= 65 && value <= 90);
+    if (!isCharacterLetter) return;
+    
+    KEY_BUFFER.push(value);
+    if (KEY_BUFFER.length > KEY_BUFFER_MAX_LENGTH) KEY_BUFFER.shift();
+    for (const theme of THEMES) {
+      if (KEY_BUFFER.join("").includes(theme.code)) {
+        SNAKE_THEME = theme;
+      }
     }
   })
   setInterval(gameTick, TICK_INTERVAL_IN_MS);
